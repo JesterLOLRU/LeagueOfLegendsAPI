@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: "jdbc:postgresql://localhost:5432/summonerInfo"
+    username: summoner
+    password: summoner
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
+    hibernate:
+      ddl-auto: none
+  liquibase:
+    change-log: classpath:db.changelog/liquibase-changelog.xml
+
+riot:
+  api-key: "RGAPI-7af49d90-6ad3-4bc1-b1e7-a8e9d3a0c997"
+  url: https://ru.api.riotgames.com
+
+feign:
+  summoner-api:
+    url: ${riot.url}
+    path: /lol/summoner/v4/summoners
