@@ -12,7 +12,7 @@ spring:
     change-log: classpath:db.changelog/liquibase-changelog.xml
 
 riot:
-  api-key: "RGAPI-7af49d90-6ad3-4bc1-b1e7-a8e9d3a0c997"
+  api-key: "ur api key"
   url: https://ru.api.riotgames.com
 
 feign:
