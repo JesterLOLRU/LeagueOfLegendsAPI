@@ -19,4 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface SummonerApiClient {
     @GetMapping(path = "/by-name/{summonerName}")
     SummonerInfoDto getSummonerByName(@PathVariable String summonerName);
+
+    @GetMapping(path = "/by-puuid/{PUUID}")
+    SummonerInfoDto getSummonerByPUUID(@PathVariable String PUUID);
 }
