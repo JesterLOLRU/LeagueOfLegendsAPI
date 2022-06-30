@@ -20,18 +20,18 @@ import java.util.List;
 public class SummonerInfoServiceImpl implements SummonerInfoService {
 
     @Autowired
-    SummonerApiClient summonerApi;
+    private SummonerApiClient summonerApi;
 
     @Autowired
-    SummonerInfoRepository summonerInfoRepository;
+    private SummonerInfoRepository summonerInfoRepository;
 
     @Autowired
-    SummonerInfoMapper summonerMapper;
+    private SummonerInfoMapper summonerMapper;
 
     @Autowired
-    ChampionMasteryApiClient championMasteryApi;
+    private ChampionMasteryApiClient championMasteryApi;
 
-     public SummonerInfoDto getSummoner(String summonerName) {
+    public SummonerInfoDto getSummoner(String summonerName) {
         var information = new SummonerInfoDto();
         var summoner = summonerInfoRepository.findByName(summonerName);
         if (summoner.isEmpty()) {
@@ -45,34 +45,36 @@ public class SummonerInfoServiceImpl implements SummonerInfoService {
             summonerInfoRepository.save(summoner.get());
         }
         return information;
-     }
+    }
 
-     public String getIdByName(String summonerName) {
-         var summoner = new SummonerInfoDto();
-         var summonerFromDb = summonerInfoRepository.findByName(summonerName);
-         if (summonerFromDb.isEmpty()) {
-             summoner = getSummoner(summonerName);
-         } else {
-             summoner = summonerMapper.toDto(summonerFromDb.get());
-         }
-         return summoner.getId();
-     }
+    @Override
+    public String getIdByName(String summonerName) {
+        var summoner = new SummonerInfoDto();
+        var summonerFromDb = summonerInfoRepository.findByName(summonerName);
+        if (summonerFromDb.isEmpty()) {
+            summoner = getSummoner(summonerName);
+        } else {
+            summoner = summonerMapper.toDto(summonerFromDb.get());
+        }
+        return summoner.getId();
+    }
 
-     public MasteryPointsDto getMastery(String summonerName) {
-         var result = new MasteryPointsDto();
-         String id = getIdByName(summonerName);
-         result.setChampions(championMasteryApi.getAllChampionMastery(id));
-         result.setTotalRank(championMasteryApi.getPlayersTotalChampionMastery(id));
-         result.setTotalPoints(getTotalMasteryPoints(result.getChampions()));
-         return result;
-     }
+    @Override
+    public MasteryPointsDto getMastery(String summonerName) {
+        var result = new MasteryPointsDto();
+        String id = getIdByName(summonerName);
+        result.setChampions(championMasteryApi.getAllChampionMastery(id));
+        result.setTotalRank(championMasteryApi.getPlayersTotalChampionMastery(id));
+        result.setTotalPoints(getTotalMasteryPoints(result.getChampions()));
+        return result;
+    }
 
-     public Integer getTotalMasteryPoints(List<ChampionMasteryDto> champions) {
-         Integer total = 0;
-         for (ChampionMasteryDto champ : champions) {
-             total += champ.getChampionPoints();
-         }
-         return total;
-     }
-
+    @Override
+    public Integer getTotalMasteryPoints(List<ChampionMasteryDto> champions) {
+        Integer total = 0;
+        for (ChampionMasteryDto champ : champions) {
+            total += champ.getChampionPoints();
+        }
+        return total;
+    }
 }

@@ -12,7 +12,7 @@ spring:
     change-log: classpath:db.changelog/liquibase-changelog.xml
 
 riot:
-  api-key: "ur api key"
+  api-key: "ur key"
   url: https://ru.api.riotgames.com
 
 feign:
@@ -22,3 +22,6 @@ feign:
   champion-mastery-api:
     url: ${riot.url}
     path: /lol/champion-mastery/v4
+  spectator-api:
+    url: ${riot.url}
+    path: /lol/spectator/v4

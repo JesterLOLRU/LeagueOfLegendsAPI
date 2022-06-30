@@ -1,7 +1,7 @@
 create table if not exists summoner_info
 (
     id                      varchar(255) not null
-        constraint history_property_record_pkey
+        constraint summoner_info_pkey
             primary key,
     account_id              varchar(255),
     profile_icon_id         integer,
@@ -10,3 +10,12 @@ create table if not exists summoner_info
     puuid                   varchar(255),
     summoner_level          integer
 );
+
+create table if not exists champions
+(
+    id                      integer not null
+        constraint champions
+            primary key,
+    name                    varchar(255)
+
+)
