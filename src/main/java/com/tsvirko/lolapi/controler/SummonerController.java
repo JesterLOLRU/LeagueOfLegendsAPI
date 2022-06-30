@@ -1,6 +1,7 @@
 package com.tsvirko.lolapi.controler;
 
 import com.tsvirko.lolapi.domain.ChampionMasteryDto;
+import com.tsvirko.lolapi.domain.MasteryPointsDto;
 import com.tsvirko.lolapi.domain.SummonerInfoDto;
 import com.tsvirko.lolapi.service.SummonerInfoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,13 +26,8 @@ public class SummonerController {
         return summonerInfoService.getSummoner(summonerName);
     }
 
-    @GetMapping(path = "/getTotalMastery/{summonerName}")
-    public Integer getTotalChampionMastery(@PathVariable String summonerName) {
-        return summonerInfoService.getTotalChampionMastery(summonerName);
-    }
-
-    @GetMapping(path = "/getAllChampionsMastery/{summonerName}")
-    public List<ChampionMasteryDto> getAllChampionsMastery(@PathVariable String summonerName) {
-        return summonerInfoService.getAllChampionsMastery(summonerName);
+    @GetMapping(path = "/getMastery/{summonerName}")
+    public MasteryPointsDto getTotalChampionMasteryRanks(@PathVariable String summonerName) {
+        return summonerInfoService.getMastery(summonerName);
     }
 }

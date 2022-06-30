@@ -1,6 +1,7 @@
 package com.tsvirko.lolapi.service.impl;
 
 import com.tsvirko.lolapi.domain.ChampionMasteryDto;
+import com.tsvirko.lolapi.domain.MasteryPointsDto;
 import com.tsvirko.lolapi.domain.entity.SummonerInfo;
 import com.tsvirko.lolapi.feign.ChampionMasteryApiClient;
 import com.tsvirko.lolapi.feign.SummonerApiClient;
@@ -46,11 +47,6 @@ public class SummonerInfoServiceImpl implements SummonerInfoService {
         return information;
      }
 
-     public Integer getTotalChampionMastery(String summonerName) {
-         String id = getIdByName(summonerName);
-         return championMasteryApi.getPlayersTotalChampionMastery(id);
-     }
-
      public String getIdByName(String summonerName) {
          var summoner = new SummonerInfoDto();
          var summonerFromDb = summonerInfoRepository.findByName(summonerName);
@@ -62,8 +58,21 @@ public class SummonerInfoServiceImpl implements SummonerInfoService {
          return summoner.getId();
      }
 
-     public List<ChampionMasteryDto> getAllChampionsMastery(String summonerName) {
+     public MasteryPointsDto getMastery(String summonerName) {
+         var result = new MasteryPointsDto();
          String id = getIdByName(summonerName);
-         return championMasteryApi.getAllChampionMastery(id);
+         result.setChampions(championMasteryApi.getAllChampionMastery(id));
+         result.setTotalRank(championMasteryApi.getPlayersTotalChampionMastery(id));
+         result.setTotalPoints(getTotalMasteryPoints(result.getChampions()));
+         return result;
      }
+
+     public Integer getTotalMasteryPoints(List<ChampionMasteryDto> champions) {
+         Integer total = 0;
+         for (ChampionMasteryDto champ : champions) {
+             total += champ.getChampionPoints();
+         }
+         return total;
+     }
+
 }
